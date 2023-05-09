@@ -1,11 +1,14 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import Head from "next/head";
+import { Sheet, SheetContent } from "@/molecules/Sheet";
+import { Select, SelectContent, SelectItem } from "@/atoms/Select";
+import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { Fragment, useState } from "react";
+import { StepsProvider, Steps, useSteps } from "react-step-builder";
+import { Checkbox } from "@/components/atoms/Checkbox";
 
 export default function Home() {
+  const [isDrawerOpen, setisDrawerOpen] = useState(false);
+
   return (
     <>
       <Head>
@@ -14,110 +17,169 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      <div className="min-h-screen w-full flex justify-center items-center">
+        <button
+          onClick={() => setisDrawerOpen(true)}
+          className="px-8 py-4 text-white text-lg bg-black hover:cursor-pointer font-mono rounded-md"
+        >
+          Make a Deposit
+        </button>
+        <Sheet open={isDrawerOpen} onOpenChange={setisDrawerOpen}>
+          <SheetContent className="flex flex-col">
+            <StepsProvider>
+              <StepsContainer />
+            </StepsProvider>
+          </SheetContent>
+        </Sheet>
+      </div>
     </>
-  )
+  );
 }
+
+const StepsContainer = () => {
+  return (
+    <Steps>
+      <Step1 />
+      <Step2 />
+    </Steps>
+  );
+};
+
+const Step1 = () => {
+  const { next, prev } = useSteps();
+
+  return (
+    <Fragment>
+      <div className="flex-grow">
+        <h1 className="text-xl font-mono py-8">Make a Deposit</h1>
+        <div className="border-t border-t-gray-200 mb-8"></div>
+        <h1 className="text-3xl font-mono">Select a deposit amount</h1>
+        <p className="my-8 text-gray-400 font-sans">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, dolore.
+          Iure illum velit incidunt sed.
+        </p>
+        <div className="rounded-lg shadow-closeShadow p-10">
+          <p className="text-gray-300 font-semibold mb-2">DEPOSIT</p>
+          <input
+            type="number"
+            placeholder="0.00$"
+            className="text-4xl font-mono placeholder:font-mono appearance-none block w-full  text-gray-700 border-transparent leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          />
+          <div className="border-t border-t-gray-100 mt-8"></div>
+          <p className="mt-8 text-gray-300 font-semibold">FROM</p>
+          <Select>
+            <SelectTrigger className="w-full text-left pt-4">
+              <SelectValue placeholder="ss" />
+            </SelectTrigger>
+            <SelectContent className="mt-4 font-semibold">
+              <SelectItem
+                value="light"
+                className="mt-4 font-semibold hover:bg-gray-100"
+              >
+                AUD Account ending with 7894
+              </SelectItem>
+              <SelectItem
+                value="ligqqdht"
+                className="mt-4 font-semibold hover:bg-gray-100"
+              >
+                AUD Account ending with 7894
+              </SelectItem>
+              <SelectItem
+                value="lighst"
+                className="mt-4 font-semibold hover:bg-gray-100"
+              >
+                AUD Account ending with 7894
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="mt-4 p-4 flex justify-between items-center">
+          <p className="text-gray-400">I depositing crypto</p>
+          <button className="px-6 py-3 shadow-closeShadow text-lg  hover:cursor-pointer font-mono rounded-lg">
+            View Wallet
+          </button>
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <button
+          onClick={prev}
+          className="px-8 py-4 hover:bg-gray-100 rounded-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={next}
+          className="px-8 py-4 text-white text-lg bg-black hover:cursor-pointer font-mono rounded-md"
+        >
+          Continue
+        </button>
+      </div>
+    </Fragment>
+  );
+};
+
+const Step2 = () => {
+  const { next, prev } = useSteps();
+  const [checkedBox, setCheckedBox] = useState<number | null>(null);
+
+  return (
+    <Fragment>
+      <div className="flex-grow">
+        <h1 className="text-xl font-mono py-8">Make a Deposit</h1>
+        <div className="border-t border-t-gray-200 mb-8"></div>
+        <h1 className="text-3xl font-mono">Select a deposit method</h1>
+        <p className="my-8 text-gray-400 font-sans">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam hic,
+          est omnis similique facere aliquam autem amet ut veritatis voluptates
+          vero alias architecto excepturi nemo officia fugiat voluptas suscipit?
+          Dolore!
+        </p>
+        <div
+          onClick={() => setCheckedBox(0)}
+          className={`relative mt-2 py-6 px-8 rounded-lg shadow-closeShadow hover:border-2 hover:border-green-700
+          ${checkedBox === 0 ? "border-2 border-green-700" : ""}`}
+        >
+          <h3 className="font-semibold">Direct Transfer</h3>
+          <p className="text-gray-400 mt-3">
+            Architecto excepturi nemo officia fugiat
+          </p>
+          <Checkbox
+            checked={checkedBox === 0}
+            className="absolute top-2 right-2"
+          />
+        </div>
+        <div
+          onClick={() => setCheckedBox(1)}
+          className={`relative mt-2 py-6 px-8 rounded-lg shadow-closeShadow hover:border-2 hover:border-green-700
+          ${checkedBox === 1 ? "border-2 border-green-700" : ""}`}
+        >
+          <h3 className="font-semibold">Direct Transfer</h3>
+          <p className="text-gray-400 mt-3">
+            Architecto excepturi nemo officia fugiat
+          </p>
+          <Checkbox
+            checked={checkedBox === 1}
+            className="absolute top-2 right-2"
+          />
+        </div>
+        <div className="relative mt-4 p-4 flex justify-between items-center">
+          <p className="text-gray-400">I depositing crypto</p>
+          <button className="px-6 py-3 shadow-closeShadow text-lg  hover:cursor-pointer font-mono rounded-lg">
+            View Wallet
+          </button>
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <button
+          onClick={prev}
+          className="px-8 py-4 hover:bg-gray-100 rounded-md"
+        >
+          Back
+        </button>
+        <button className="px-8 py-4 text-white text-lg bg-black hover:cursor-pointer font-mono rounded-md">
+          Continue
+        </button>
+      </div>
+    </Fragment>
+  );
+};
